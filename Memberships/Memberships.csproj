@@ -193,13 +193,63 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\ItemType.cs" />
+    <Compile Include="Entities\Part.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductItem.cs" />
+    <Compile Include="Entities\ProductLinkText.cs" />
+    <Compile Include="Entities\ProductType.cs" />
     <Compile Include="Entities\Section.cs" />
+    <Compile Include="Entities\Subscription.cs" />
+    <Compile Include="Entities\SubscriptionProduct.cs" />
+    <Compile Include="Entities\UserSubscription.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201803152036214_AddSections.cs" />
     <Compile Include="Migrations\201803152036214_AddSections.Designer.cs">
       <DependentUpon>201803152036214_AddSections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803152100423_AddPartsEntity.cs" />
+    <Compile Include="Migrations\201803152100423_AddPartsEntity.Designer.cs">
+      <DependentUpon>201803152100423_AddPartsEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803152106597_AddItemType.cs" />
+    <Compile Include="Migrations\201803152106597_AddItemType.Designer.cs">
+      <DependentUpon>201803152106597_AddItemType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803152158489_AddEntities.cs" />
+    <Compile Include="Migrations\201803152158489_AddEntities.Designer.cs">
+      <DependentUpon>201803152158489_AddEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803162317107_AddProductEntity.cs" />
+    <Compile Include="Migrations\201803162317107_AddProductEntity.Designer.cs">
+      <DependentUpon>201803162317107_AddProductEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171243502_AddProductLinkAndProductText.cs" />
+    <Compile Include="Migrations\201803171243502_AddProductLinkAndProductText.Designer.cs">
+      <DependentUpon>201803171243502_AddProductLinkAndProductText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171332404_AddSubscriptionTable.cs" />
+    <Compile Include="Migrations\201803171332404_AddSubscriptionTable.Designer.cs">
+      <DependentUpon>201803171332404_AddSubscriptionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171352188_AddProductItem.cs" />
+    <Compile Include="Migrations\201803171352188_AddProductItem.Designer.cs">
+      <DependentUpon>201803171352188_AddProductItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171416091_AddSubscriptionProduct.cs" />
+    <Compile Include="Migrations\201803171416091_AddSubscriptionProduct.Designer.cs">
+      <DependentUpon>201803171416091_AddSubscriptionProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171437492_AddUserSubscription.cs" />
+    <Compile Include="Migrations\201803171437492_AddUserSubscription.Designer.cs">
+      <DependentUpon>201803171437492_AddUserSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803171504429_UpdateUserTable.cs" />
+    <Compile Include="Migrations\201803171504429_UpdateUserTable.Designer.cs">
+      <DependentUpon>201803171504429_UpdateUserTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -299,6 +349,36 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803152036214_AddSections.resx">
       <DependentUpon>201803152036214_AddSections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803152100423_AddPartsEntity.resx">
+      <DependentUpon>201803152100423_AddPartsEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803152106597_AddItemType.resx">
+      <DependentUpon>201803152106597_AddItemType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803152158489_AddEntities.resx">
+      <DependentUpon>201803152158489_AddEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803162317107_AddProductEntity.resx">
+      <DependentUpon>201803162317107_AddProductEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171243502_AddProductLinkAndProductText.resx">
+      <DependentUpon>201803171243502_AddProductLinkAndProductText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171332404_AddSubscriptionTable.resx">
+      <DependentUpon>201803171332404_AddSubscriptionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171352188_AddProductItem.resx">
+      <DependentUpon>201803171352188_AddProductItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171416091_AddSubscriptionProduct.resx">
+      <DependentUpon>201803171416091_AddSubscriptionProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171437492_AddUserSubscription.resx">
+      <DependentUpon>201803171437492_AddUserSubscription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803171504429_UpdateUserTable.resx">
+      <DependentUpon>201803171504429_UpdateUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
