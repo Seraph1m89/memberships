@@ -1,0 +1,6 @@
+﻿@model Memberships.Areas.Admin.Models.ButtonModel
+
+<a href="@Url.Action(Model.Action)@Model.GetActionParameters()" type="button" class="btn @Model.GetButtonClass() btn-sm">
+    <span class="glyphicon glyphicon-@Model.Glyph"></span>
+    <span class="sr-only">@Model.Text</span>
+</a>
