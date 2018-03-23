@@ -7,20 +7,20 @@
     <ul class="dropdown-menu" role="menu">
         <li class="dropdown-header">Minor Entities</li>
         <li class="divider" />
-        <li>@Html.ActionLink("\u00A0\u00A0Section", "Section", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Part", "Part", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Item Type", "ItemType", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Product Type", "ProductType", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Section", "ProductLinkText", "Admin")</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Section", "Section", "Admin", new {area = ""}, new {})</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Part", "Part", "Admin", new { area = "" }, new { })</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Item Type", "ItemType", "Admin", new { area = "" }, new { })</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Product Type", "ProductType", "Admin", new { area = "" }, new { })</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Product Link Text", "ProductLinkText", "Admin", new { area = "" }, new { })</li>
         <li class="divider" />
         <li class="dropdown-header">Major Entities</li>
         <li class="divider" />
-        <li>@Html.ActionLink("\u00A0\u00A0Item", "Item", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Product", "Product", "Admin")</li>
-        <li>@Html.ActionLink("\u00A0\u00A0Subscription", "Subscription", "Admin")</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Item", "Item", "Admin", new { area = "" }, new { })</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Product", "Product", "Admin", new { area = "" }, new { })</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Subscription", "Subscription", "Admin", new { area = "" }, new { })</li>
         <li class="divider"></li>
         <li class="dropdown-header">Users & Subscriptions</li>
         <li class="divider"></li>
-        <li>@Html.ActionLink("\u00A0\u00A0Users & Subscriptions", "", "Account")</li>
+        <li>@Html.ActionLink("\u00A0\u00A0Users & Subscriptions", "", "Account", new { area = "" }, new { })</li>
     </ul>
 </li>
