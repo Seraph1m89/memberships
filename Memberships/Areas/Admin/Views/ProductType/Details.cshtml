@@ -1,4 +1,5 @@
-﻿@model Memberships.Entities.ProductType
+﻿@using Memberships.Areas.Admin.Models
+@model Memberships.Entities.ProductType
 
 @{
     ViewBag.Title = "Details";
@@ -21,6 +22,6 @@
     </dl>
 </div>
 <p>
-    @Html.Partial("_EditButtonPartial", Model.Id)
+    @Html.Partial("_EditButtonPartial", new ButtonModel(Model.Id))
     @Html.Partial("_BackToListButtonPartial")
 </p>
