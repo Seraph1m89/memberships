@@ -1,5 +1,5 @@
 ﻿@using Memberships.Areas.Admin.Models
-@model Memberships.Areas.Admin.Models.ProductItemViewModel
+@model SubscriptionProductViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -8,11 +8,11 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Product Item</h4>
+    <h4>ProductItem</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>@Html.DisplayNameFor(m => m.ItemTitle)</dt>
-        <dd>@Html.DisplayFor(m => m.ItemTitle)</dd>
+        <dt>@Html.DisplayNameFor(m => m.SubscriptionTitle)</dt>
+        <dd>@Html.DisplayFor(m => m.SubscriptionTitle)</dd>
         <dt>@Html.DisplayNameFor(m => m.ProductTitle)</dt>
         <dd>@Html.DisplayFor(m => m.ProductTitle)</dd>
     </dl>
@@ -20,7 +20,7 @@
 <p>
     @{
         var button = new ButtonModel();
-        button.AddOrUpdateParameter(nameof(Model.ItemId), Model.ItemId);
+        button.AddOrUpdateParameter(nameof(Model.SubscriptionId), Model.SubscriptionId);
         button.AddOrUpdateParameter(nameof(Model.ProductId), Model.ProductId);
     }
     @Html.Partial("_EditButtonPartial", button)

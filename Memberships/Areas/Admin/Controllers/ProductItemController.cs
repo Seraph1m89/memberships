@@ -135,8 +135,6 @@ namespace Memberships.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await Change(productItem);
-                db.Entry(productItem).State = EntityState.Modified;
-                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 

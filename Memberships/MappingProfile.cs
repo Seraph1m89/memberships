@@ -13,6 +13,8 @@ namespace Memberships
             CreateMap<ProductModel, Product>();
             CreateMap<ProductItem, ProductItemViewModel>();
             CreateMap<ProductItemViewModel, ProductItem>();
+            CreateMap<SubscriptionProduct, SubscriptionProductViewModel>();
+            CreateMap<SubscriptionProductViewModel, SubscriptionProduct>();
         }
     }
 }
