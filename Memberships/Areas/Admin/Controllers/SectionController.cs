@@ -12,7 +12,7 @@ using Memberships.Models;
 
 namespace Memberships.Areas.Admin.Controllers
 {
-    public class SectionController : Controller
+    public class SectionController : AdminController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

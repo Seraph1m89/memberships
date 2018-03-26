@@ -20,8 +20,8 @@
 <p>
     @{
         var button = new ButtonModel();
-        button.AddOrUpdateParameter(nameof(Model.SubscriptionId), Model.SubscriptionId);
-        button.AddOrUpdateParameter(nameof(Model.ProductId), Model.ProductId);
+        button.AddOrUpdateParameter(nameof(Model.SubscriptionId), Model.SubscriptionId.ToString());
+        button.AddOrUpdateParameter(nameof(Model.ProductId), Model.ProductId.ToString());
     }
     @Html.Partial("_EditButtonPartial", button)
     @Html.Partial("_BackToListButtonPartial")

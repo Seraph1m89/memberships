@@ -32,8 +32,8 @@
         <td>
             @{
                 var buttonModel = new ButtonModel();
-                buttonModel.AddOrUpdateParameter(nameof(item.ProductId), item.ProductId);
-                buttonModel.AddOrUpdateParameter(nameof(item.ItemId), item.ItemId);
+                buttonModel.AddOrUpdateParameter(nameof(item.ProductId), item.ProductId.ToString());
+                buttonModel.AddOrUpdateParameter(nameof(item.ItemId), item.ItemId.ToString());
             }
             @Html.Partial("_TableButtonsPartial", buttonModel)
         </td>

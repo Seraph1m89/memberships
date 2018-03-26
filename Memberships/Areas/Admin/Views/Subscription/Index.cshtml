@@ -35,7 +35,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.RegistrationCode)
         </td>
-        @Html.Partial("_TableButtonsPartial", new ButtonModel(item.Id))
+        @Html.Partial("_TableButtonsPartial", new ButtonModel(item.Id.ToString()))
     </tr>
 }
 

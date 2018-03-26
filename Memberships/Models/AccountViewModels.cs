@@ -79,6 +79,12 @@ namespace Memberships.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        [MaxLength(100, ErrorMessage = "First name should not exceed 100 symbols")]
+        public string 
+            FirstName { get; set; }
     }
 
     public class ResetPasswordViewModel

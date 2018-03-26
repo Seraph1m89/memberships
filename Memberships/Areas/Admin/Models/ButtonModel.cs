@@ -11,10 +11,10 @@ namespace Memberships.Areas.Admin.Models
     {
         public ButtonModel()
         {
-            AdditionalParameters = new Dictionary<string, int>();
+            AdditionalParameters = new Dictionary<string, string>();
         }
 
-        public ButtonModel(int defaultId) : this()
+        public ButtonModel(string defaultId) : this()
         {
             AddOrUpdateParameter("Id", defaultId);
         }
@@ -27,9 +27,9 @@ namespace Memberships.Areas.Admin.Models
 
         public ButtonVisualType ButtonType { get; set; }
 
-        public Dictionary<string, int> AdditionalParameters { get; set; }
+        public Dictionary<string, string> AdditionalParameters { get; set; }
 
-        public void AddOrUpdateParameter(string parameterName, int parameterValue)
+        public void AddOrUpdateParameter(string parameterName, string parameterValue)
         {
             AdditionalParameters[parameterName] = parameterValue;
         }
@@ -40,9 +40,17 @@ namespace Memberships.Areas.Admin.Models
 
             foreach (var keyValue in AdditionalParameters)
             {
-                if (keyValue.Value > 0)
+                if (int.TryParse(keyValue.Value, out var intValue))
                 {
-                    sb.Append($"{char.ToLowerInvariant(keyValue.Key[0]) + keyValue.Key.Substring(1)}={keyValue.Value}&");
+                    if (intValue > 0)
+                    {
+                        sb.Append($"{char.ToLowerInvariant(keyValue.Key[0]) + keyValue.Key.Substring(1)}={keyValue.Value}&");
+                    }
+                }
+                else if (!string.IsNullOrWhiteSpace(keyValue.Value))
+                {
+                    sb.Append(
+                        $"{char.ToLowerInvariant(keyValue.Key[0]) + keyValue.Key.Substring(1)}={keyValue.Value}&");
                 }
             }
 
@@ -72,6 +80,7 @@ namespace Memberships.Areas.Admin.Models
         Success,
         Danger,
         Warning,
-        Primary
+        Primary,
+        Info
     }
 }

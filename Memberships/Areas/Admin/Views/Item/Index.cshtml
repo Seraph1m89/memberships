@@ -47,7 +47,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.IsFree)
         </td>
-        @Html.Partial("_TableButtonsPartial", new ButtonModel(item.Id))
+        @Html.Partial("_TableButtonsPartial", new ButtonModel(item.Id.ToString()))
     </tr>
 }
 

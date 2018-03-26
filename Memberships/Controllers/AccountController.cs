@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+using Memberships.Entities;
+using Memberships.Extensions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -22,7 +28,7 @@ namespace Memberships.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +40,9 @@ namespace Memberships.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -50,6 +56,263 @@ namespace Memberships.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        public ActionResult Index()
+        {
+            var users = new List<UserViewModel>();
+            users.FillUsers();
+
+            return View(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    IsActive = true,
+                    Registered = DateTime.UtcNow,
+                    EmailConfirmed = true
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Account/Edit
+        public async Task<ActionResult> Edit(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = Mapper.Map<UserViewModel>(user);
+            model.Password = user.PasswordHash;
+            return View(model);
+        }
+
+        // POST: Account/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserViewModel model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var user = await UserManager.FindByIdAsync(model.Id);
+                    if (user != null)
+                    {
+                        user.FirstName = model.FirstName;
+                        user.UserName = model.Email;
+                        user.Email = model.Email;
+                        if (!user.PasswordHash.Equals(model.Password))
+                        {
+                            user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+                        }
+
+                        var result = await UserManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Account");
+                        }
+
+                        AddErrors(result);
+                    }
+                }
+            }
+            catch { }
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Account/Edit
+        public async Task<ActionResult> Delete(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = Mapper.Map<UserViewModel>(user);
+            model.Password = user.PasswordHash;
+            return View(model);
+        }
+
+        // POST: Account/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(UserViewModel model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                var user = await UserManager.FindByIdAsync(model.Id);
+                if (user != null)
+                {
+                    var result = await UserManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        using (var db = ApplicationDbContext.Create())
+                        {
+                            var subscriptions = db.UserSubscriptions.Where(u => u.UserId == user.Id);
+                            db.UserSubscriptions.RemoveRange(subscriptions);
+                            await db.SaveChangesAsync();
+                        }
+
+                        return RedirectToAction("Index", "Account");
+                    }
+
+                    AddErrors(result);
+                }
+            }
+            catch { }
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Account/Subscription
+        public async Task<ActionResult> Subscription(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var model = new UserSubscriptionViewModel();
+            using (var db = ApplicationDbContext.Create())
+            {
+                model.UserSubscriptions = await db.UserSubscriptions
+                    .Join(db.Subscriptions,
+                        userSubscription => userSubscription.SubscriptionId,
+                        subscription => subscription.Id,
+                        (userSubscription, subscription) => new {userSubscription, subscription})
+                    .Where(join => join.userSubscription.UserId == userId)
+                    .Select(join => new UserSubscriptionModel
+                    {
+                        Id = join.subscription.Id,
+                        StartDate = join.userSubscription.StartDate,
+                        EndDate = join.userSubscription.EndDate,
+                        Description = join.subscription.Description,
+                        RegistrationCode = join.subscription.RegistrationCode,
+                        Title = join.subscription.Title
+                    })
+                    .ToListAsync();
+
+                var ids = model.UserSubscriptions.Select(s => s.Id);
+                model.AttachableSubscriptions = await db.Subscriptions.Where(s => !ids.Contains(s.Id)).ToListAsync();
+            }
+
+            model.DisableDropDown = !model.AttachableSubscriptions.Any();
+            model.UserId = userId;
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Subscription(UserSubscriptionViewModel model)
+        {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (var db = ApplicationDbContext.Create())
+                    {
+                        db.UserSubscriptions.Add(new UserSubscription
+                        {
+                            UserId = model.UserId,
+                            SubscriptionId = model.SubscriptionId,
+                            StartDate = DateTime.UtcNow,
+                            EndDate = DateTime.MaxValue
+                        });
+
+                        await db.SaveChangesAsync();
+                    }
+                }
+            }
+            catch { }
+
+            return RedirectToAction("Subscription", "Account", new { userId = model.UserId});
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveUserSubscription(UserSubscriptionModel subscription)
+        {
+            if (subscription.Id <= 0 || string.IsNullOrWhiteSpace(subscription.UserId))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var db = ApplicationDbContext.Create())
+            {
+                var subscriptions = db.UserSubscriptions.Where(us => us.UserId == subscription.UserId && us.SubscriptionId == subscription.Id);
+                db.UserSubscriptions.RemoveRange(subscriptions);
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Subscription", "Account", new { subscription.UserId });
         }
 
         //
@@ -120,7 +383,7 @@ namespace Memberships.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,12 +414,20 @@ namespace Memberships.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    IsActive = true,
+                    Registered = DateTime.UtcNow,
+                    EmailConfirmed = true
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

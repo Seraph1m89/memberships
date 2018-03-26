@@ -2,6 +2,7 @@
 using AutoMapper;
 using Memberships.Areas.Admin.Models;
 using Memberships.Entities;
+using Memberships.Models;
 
 namespace Memberships
 {
@@ -15,6 +16,8 @@ namespace Memberships
             CreateMap<ProductItemViewModel, ProductItem>();
             CreateMap<SubscriptionProduct, SubscriptionProductViewModel>();
             CreateMap<SubscriptionProductViewModel, SubscriptionProduct>();
+            CreateMap<ApplicationUser, UserViewModel>().ForMember(dest => dest.Password, opts => opts.Ignore());
+            CreateMap<UserViewModel, ApplicationUser>().ForMember(dest => dest.PasswordHash, opts => opts.Ignore());
         }
     }
 }

@@ -16,7 +16,7 @@ using Memberships.Models;
 
 namespace Memberships.Areas.Admin.Controllers
 {
-    public class ProductItemController : Controller
+    public class ProductItemController : AdminController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

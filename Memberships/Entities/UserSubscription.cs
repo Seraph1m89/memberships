@@ -19,7 +19,7 @@ namespace Memberships.Entities
         [MaxLength(128)]
         public string UserId { get; set; }
 
-        public DateTime? StartData { get; set; }
+        public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
     }

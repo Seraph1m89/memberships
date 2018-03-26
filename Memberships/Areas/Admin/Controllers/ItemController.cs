@@ -12,7 +12,7 @@ using Memberships.Models;
 
 namespace Memberships.Areas.Admin.Controllers
 {
-    public class ItemController : Controller
+    public class ItemController : AdminController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -54,7 +54,10 @@ namespace Memberships.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,Url,ImageUrl,Html,WaitDays,ProductId,ItemTypeId,PartId,SectionId,IsFree")] Item item)
+        public async Task<ActionResult> Create(
+            [Bind(Include =
+                "Id,Title,Description,Url,ImageUrl,Html,WaitDays,ProductId,ItemTypeId,PartId,SectionId,IsFree")]
+            Item item)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +77,7 @@ namespace Memberships.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Item item = await db.Items.FindAsync(id);
-            
+
             if (item == null)
             {
                 return HttpNotFound();
@@ -92,7 +95,10 @@ namespace Memberships.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,Url,ImageUrl,Html,WaitDays,ProductId,ItemTypeId,PartId,SectionId,IsFree")] Item item)
+        public async Task<ActionResult> Edit(
+            [Bind(Include =
+                "Id,Title,Description,Url,ImageUrl,Html,WaitDays,ProductId,ItemTypeId,PartId,SectionId,IsFree")]
+            Item item)
         {
             if (ModelState.IsValid)
             {

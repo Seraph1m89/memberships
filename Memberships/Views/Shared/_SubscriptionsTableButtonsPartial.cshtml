@@ -1,0 +1,34 @@
+﻿@using Memberships.Areas.Admin.Models
+@model Memberships.Areas.Admin.Models.ButtonModel
+
+<td style="width:120px;">
+    <div class="btn-group" role="group">
+        @Html.Partial("_ButtonPartial",
+            new ButtonModel
+            {
+                Action = "Edit",
+                ButtonType = ButtonVisualType.Primary,
+                Text = "Edit button",
+                Glyph = "pencil",
+                AdditionalParameters = Model.AdditionalParameters
+            })
+        @Html.Partial("_ButtonPartial",
+            new ButtonModel
+            {
+                Action = "Subscription",
+                ButtonType = ButtonVisualType.Success,
+                Text = "Subscription",
+                Glyph = "list",
+                AdditionalParameters = Model.AdditionalParameters
+            })
+        @Html.Partial("_ButtonPartial",
+            new ButtonModel
+            {
+                Action = "Delete",
+                ButtonType = ButtonVisualType.Danger,
+                Text = "Delete button",
+                Glyph = "trash",
+                AdditionalParameters = Model.AdditionalParameters
+            })
+    </div>
+</td>

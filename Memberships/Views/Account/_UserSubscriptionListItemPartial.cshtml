@@ -1,0 +1,21 @@
+﻿@model Memberships.Models.UserSubscriptionModel
+
+@using (Html.BeginForm("RemoveUserSubscription", "Account"))
+{
+    @Html.AntiForgeryToken()
+    <tr>
+        @Html.HiddenFor(m => Model.UserId)
+        @Html.HiddenFor(m => m.Id)
+        <td>@Html.DisplayFor(m => Model.Id)</td>
+        <td>@Html.DisplayFor(m => Model.Title)</td>
+        <td>@Html.DisplayFor(m => Model.RegistrationCode)</td>
+        <td>@Html.DisplayFor(m => Model.StartDate)</td>
+        <td>@Html.DisplayFor(m => Model.EndDate)</td>
+        <td>
+            @*<input type="submit" value="RemoveUserSubscription" class="btn btn-success" />*@
+            <button value="RemoveUserSubscription" type="submit" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </td>
+    </tr>
+}
