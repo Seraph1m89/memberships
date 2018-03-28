@@ -26,8 +26,9 @@ namespace Memberships
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                 "~/Scripts/AdminMenu.js",
                 "~/Scripts/Carret.js",
-                "~/Scripts/videoJS.js"));
-
+                "~/Scripts/videoJS.js",
+                "~/Scripts/RegisterCode.js"));
+            
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
@@ -36,7 +37,8 @@ namespace Memberships
                 "~/Content/navbar.css",
                 "~/Content/thumbnails.css",
                 "~/Content/ProductContent.css",
-                "~/Content/Carret.css"));
+                "~/Content/Carret.css",
+                "~/Content/RegisterCode.css"));
         }
     }
 }

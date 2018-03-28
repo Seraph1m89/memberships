@@ -1,0 +1,22 @@
+﻿.register-code-area {
+    margin-left: -15px;
+}
+
+.register-code-panel {
+    margin-top: 20px;
+}
+    .register-code-panel,
+    .register-code-panel .panel-heading,
+    .register-code-panel * {
+        -ms-border-radius: 0;
+        border-radius: 0;
+    }
+
+    .register-code-panel .alert {
+        padding: 5px;
+        margin-bottom: 0;
+        margin-top: 3px;
+        border: hidden;
+        -ms-border-radius: 0;
+        border-radius: 0;
+    }
