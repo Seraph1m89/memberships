@@ -1,0 +1,37 @@
+﻿@model Memberships.Models.ContentViewModel
+
+@{
+    ViewBag.Title = "Content";
+}
+
+<div class="headline">
+    <h2>@Model.Title</h2>
+    <a class="btn btn-primary pull-right" href="/ProductContent/Index/@Model.ProductId">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        Back
+    </a>
+</div>
+<div>@Model.Description</div>
+@if (!string.IsNullOrWhiteSpace(Model.Html))
+{
+    <div class="active">@Html.Raw(Model.Html)</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.VideoUrl))
+{
+    <p>Qweqwe?</p>
+    <video id="video" class="video-js vjs-default-skin vjs-big-play-centered vjs16-9"
+           controls preload="auto" > </video>
+    <div id="hiddenUrl" hidden="hidden">@Model.VideoUrl</div>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            console.log($("#hiddenUrl").text());
+            videoJS($("#hiddenUrl").text());
+        });
+    </script>
+}

@@ -64,7 +64,6 @@ namespace Memberships.Extensions
                                    userSubscription.SubscriptionId
                                where item.SectionId == sectionId
                                      && productItem.ProductId == productId
-                                     && item.ItemTypeId == itemTypeId
                                      && userSubscription.UserId.Equals(userId)
                                orderby item.PartId
                                select new ProductItemRow
@@ -72,7 +71,7 @@ namespace Memberships.Extensions
                                    ItemId = item.Id,
                                    Description = item.Description,
                                    Title = item.Title,
-                                   Link = "/ProductContent/Content/" + productItem.ProductId + "/" + item.Id,
+                                   Link = itemType.Title.ToLower() == "download" ? item.Url : "/ProductContent/Content/" + productItem.ProductId + "/" + item.Id,
                                    ImageUrl = item.ImageUrl,
                                    ReleaseDate = DbFunctions.CreateDateTime(userSubscription.StartDate.Value.Year,
                                        userSubscription.StartDate.Value.Month,
@@ -85,15 +84,27 @@ namespace Memberships.Extensions
                                        >= DbFunctions.CreateDateTime(userSubscription.StartDate.Value.Year,
                                           userSubscription.StartDate.Value.Month,
                                           userSubscription.StartDate.Value.Day + item.WaitDays,
-                                          0, 0, 0)
+                                          0, 0, 0),
+                                   IsDownloadable = itemType.Title.ToLower() == "download"
                                }).ToListAsync();
 
             return items;
         }
 
-        private static DateTime? CreateDateTimeFromUserSubscription(Entities.Item item, DateTime? dateTimeToExtract)
+        public static async Task<ContentViewModel> GetContentAsync(int productId, int itemId)
         {
-            return DbFunctions.CreateDateTime(dateTimeToExtract.Value.Year, dateTimeToExtract.Value.Month, dateTimeToExtract.Value.Day + item.WaitDays, 0, 0, 0);
+            var db = ApplicationDbContext.Create();
+            return await (from item in db.Items
+                          //join itemType in db.ItemTypes on item.ItemTypeId equals itemType.Id
+                          where item.Id == itemId
+                select new ContentViewModel
+                {
+                    ProductId = productId,
+                    Html = item.Html,
+                    Title = item.Title,
+                    Description = item.Description,
+                    VideoUrl = item.Url
+                }).FirstOrDefaultAsync();
         }
     }
 }

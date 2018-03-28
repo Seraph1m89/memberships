@@ -24,8 +24,9 @@ namespace Memberships
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                      "~/Scripts/AdminMenu.js",
-                      "~/Scripts/Carret.js"));
+                "~/Scripts/AdminMenu.js",
+                "~/Scripts/Carret.js",
+                "~/Scripts/videoJS.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
